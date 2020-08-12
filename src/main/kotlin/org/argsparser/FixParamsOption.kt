@@ -11,13 +11,13 @@ import java.util.*
  *
  */
 class FixParamsOption(
-        shortName: String,
-        fullName: String = "",
-        description: String = "",
-        priority: Int = Int.MIN_VALUE,
-        required: Boolean = false,
-        private val cntParams: Int = 1,
-        val action: (MutableList<String>) -> Boolean
+        shortName       : String,
+        fullName        : String = "",
+        description     : String = "",
+        priority        : Int = Int.MIN_VALUE,
+        required        : Boolean = false,
+        private val cntParams   : Int = 1,
+        val action              : (MutableList<String>) -> Boolean
 ) : AOption(
         shortName,
         fullName,

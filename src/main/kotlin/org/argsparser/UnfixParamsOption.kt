@@ -8,12 +8,12 @@ import java.util.*
  *
  */
 class UnfixParamsOption(
-        shortName: String,
-        fullName: String = "",
-        description: String = "",
-        priority: Int = Int.MIN_VALUE,
-        required: Boolean = false,
-        val action: (MutableList<String>) -> Boolean
+        shortName       : String,
+        fullName        : String = "",
+        description     : String = "",
+        priority        : Int = Int.MIN_VALUE,
+        required        : Boolean = false,
+        val action      : (MutableList<String>) -> Boolean
 ) : AOption(
         shortName,
         fullName,

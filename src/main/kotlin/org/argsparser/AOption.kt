@@ -15,15 +15,15 @@ package org.argsparser
  *
  */
 abstract class AOption(
-        protected val shortName   : String,
-        protected val fullName    : String,
-        protected val description : String,
-        val priority              : Int,
-        var required              : Boolean,
-        var help                  : String = "") {
+        protected val shortName     : String,
+        protected val fullName      : String,
+        protected val description   : String,
+        val priority    : Int,
+        var required    : Boolean,
+        var help        : String = "") {
 
     init {
-        if(help == "")
+        if (help == "")
             help = buildHelp()
     }
 
