@@ -11,9 +11,9 @@ private class TestConfiguration {
     var unfixedParamOptionPrior = 2
     var programParamPrior = 3
 
-    var optionMultiParam = mutableListOf("param1", "param2", "param3", "param4")
-    var optionUnfixParam = mutableListOf("paramA", "paramB", "paramC")
-    var programParam = mutableListOf("pp1", "pp2", "pp3", "pp4", "pp5", "-s", "-p", "-d", "-e")
+    var optionMultiParam = arrayOf("param1", "param2", "param3", "param4")
+    var optionUnfixParam = arrayOf("paramA", "paramB", "paramC")
+    var programParam = arrayOf("pp1", "pp2", "pp3", "pp4", "pp5", "-s", "-p", "-d", "-e")
 
     private fun checkAccepted(n: Int): Boolean {
         for (idx in 0 until n)
@@ -21,7 +21,7 @@ private class TestConfiguration {
         return true
     }
 
-    private fun compareParams(params0: MutableList<String>, params1: MutableList<String>): Boolean {
+    private fun compareParams(params0: Array<String>, params1: Array<String>): Boolean {
         if (params0.size != params1.size) return false
         for (idx in params0.indices)
             if (params0[idx] != params1[idx])
@@ -35,21 +35,21 @@ private class TestConfiguration {
         return true
     }
 
-    fun applyMultiParamOption(params: MutableList<String>): Boolean {
+    fun applyMultiParamOption(params: Array<String>): Boolean {
         assert(checkAccepted(multiParamOptionPrior))
         assert(compareParams(optionMultiParam, params))
         accepted[multiParamOptionPrior] = true
         return true
     }
 
-    fun applyUnfixParamOption(params: MutableList<String>): Boolean {
+    fun applyUnfixParamOption(params: Array<String>): Boolean {
         assert(checkAccepted(unfixedParamOptionPrior))
         assert(compareParams(optionUnfixParam, params))
         accepted[unfixedParamOptionPrior] = true
         return true
     }
 
-    fun applyProgramParam(params: MutableList<String>): Boolean {
+    fun applyProgramParam(params: Array<String>): Boolean {
         assert(checkAccepted(programParamPrior))
         assert(compareParams(programParam, params))
         accepted[programParamPrior] = true

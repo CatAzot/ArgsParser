@@ -13,7 +13,7 @@ class UnfixParamsOption(
         description     : String = "",
         priority        : Int = Int.MIN_VALUE,
         required        : Boolean = false,
-        val action      : (MutableList<String>) -> Boolean
+        val action      : (Array<String>) -> Boolean
 ) : AOption(
         shortName,
         fullName,
@@ -38,7 +38,7 @@ class UnfixParamsOption(
                     iterator.remove()
                 } while (iterator.hasNext())
 
-                return if (!action(params)) ParseResult.INVALID_OPTION else ParseResult.OK
+                return if (!action(params.toTypedArray())) ParseResult.INVALID_OPTION else ParseResult.OK
 
             }
         }

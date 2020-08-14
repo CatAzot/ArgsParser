@@ -22,7 +22,7 @@ class ArgsParser(
         private val programVersion      : String,
         private val helpPreamble        : String,
         private val helpConclusion      : String,
-        private val applyParams         : (MutableList<String>) -> Boolean = { false },
+        private val applyParams         : (Array<String>) -> Boolean = { false },
         private var helpUsage           : String = "",
         private var helpOptions         : String = "",
         private var customHelpOption    : Boolean = false
@@ -87,7 +87,7 @@ class ArgsParser(
 
         if(helpRequested) return ParseResult.HELP_REQUESTED
 
-        if(!applyParams(argsList))
+        if(!applyParams(argsList.toTypedArray()))
             return ParseResult.INVALID_PARAMS
 
         return ParseResult.OK

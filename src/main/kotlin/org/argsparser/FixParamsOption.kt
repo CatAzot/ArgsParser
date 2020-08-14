@@ -16,8 +16,8 @@ class FixParamsOption(
         description     : String = "",
         priority        : Int = Int.MIN_VALUE,
         required        : Boolean = false,
-        private val cntParams   : Int = 1,
-        val action              : (MutableList<String>) -> Boolean
+        private val cntParams   : Int,
+        val action              : (Array<String>) -> Boolean
 ) : AOption(
         shortName,
         fullName,
@@ -25,6 +25,28 @@ class FixParamsOption(
         priority,
         required
 ) {
+
+    /**
+     *
+     * Позволяет создать опцию с одним параметром и использовать обработчик без массива
+     *
+     */
+    constructor(
+            shortName       : String,
+            fullName        : String = "",
+            description     : String = "",
+            priority        : Int = Int.MIN_VALUE,
+            required        : Boolean = false,
+            action          : (String) -> Boolean
+    ) : this(
+            shortName,
+            fullName,
+            description,
+            priority,
+            required,
+            1,
+            { t: Array<String> -> action(t[0]) }
+    )
 
     override fun apply(args: MutableList<String>): ParseResult {
         val iterator = args.iterator()
@@ -36,7 +58,7 @@ class FixParamsOption(
                     params.add(iterator.next())
                     iterator.remove()
                 }
-                if (!action(params))
+                if (!action(params.toTypedArray()))
                     return ParseResult.INVALID_OPTION
                 return ParseResult.OK
             }
