@@ -6,26 +6,25 @@ import java.util.*
  *
  * Реализация парсера аргументов командной строки
  *
- * @property programName        Имя программы. Используется при формировании подсказки по ключу --help
- * @property programVersion     Версия программы. Используется при формировании подсказки по ключу --help
- * @property helpPreamble       Преамбула подсказки по ключу --help
- * @property applyParams        Функция, обрабатывающая параметры командной строки
- * @property helpConclusion     Заключение подсказки по ключу --help
+ * @property programInfo        Информация о программе (обычно: имя программы, версия и т.д.).
+ * @property helpPreamble       Преамбула подсказки по ключу --help.
+ * @property applyParams        Функция, обрабатывающая параметры командной строки.
+ * @property helpConclusion     Заключение подсказки по ключу --help.
  * @property helpUsage          Подсказка по использованию опций. Если пользователь не предоставляет свою подсказку,
- *                              формируется автоматически
- * @property helpOptions        Подсказка для опций. Если не задана, подсказка по опциям формируется автоматически
- * @property customHelpOption   Флаг, указывающий на необходимость создания кастомной опции помощи
+ *                              формируется автоматически.
+ * @property manualHelpOption   Пользовательская опция помощи (-h, --help). Поскольку данная опция должна обладать наибольшим
+ *                              приоритетом, а также во избежание конфликта с другими опциями и ключами, по умолчанию (true)
+ *                              опция --help не добавляется к списку обрабатываемых.
+ * @property descriptionIndent  Величина отступа имени опции и ее описания в подсказке (-h, --help <ОТСТУП> description).
  *
  */
 class ArgsParser(
-        private val programName         : String,
-        private val programVersion      : String,
-        private val helpPreamble        : String,
-        private val helpConclusion      : String,
-        private val applyParams         : (Array<String>) -> Boolean = { false },
+        private val programInfo         : String = "",
         private var helpUsage           : String = "",
-        private var helpOptions         : String = "",
-        private var customHelpOption    : Boolean = false
+        private val helpPreamble        : String = "",
+        private val helpConclusion      : String = "",
+        private var descriptionIndent   : Int = 30,
+        private val applyParams         : (Array<String>) -> Boolean = { false }
 ) {
 
     /**
@@ -39,6 +38,8 @@ class ArgsParser(
     private val options = LinkedList<AOption>()
     private var requiredControl = 0
     private var helpRequested = false
+
+    var manualHelpOption: Boolean = true
     var badOption: AOption? = null
 
     /**
@@ -69,8 +70,8 @@ class ArgsParser(
 
         splitChainKeys(argsList)
 
-        if(!customHelpOption) {
-            options.add(Key(
+        if(!manualHelpOption) {
+            addOption(Key(
                     "-h",
                     "--help",
                     "Show this message",
@@ -96,20 +97,32 @@ class ArgsParser(
 
     /**
      *
-     * Формирование подсказки (по ключу --help или -h)
+     * Формирование подсказки (обычно по ключу --help или -h)
      *
      * @return Сформированная подсказка
      *
      */
     fun buildHelp(): String {
-        return  "\n" + programName  + "\n"   +
-                programVersion      + "\n\n" +
-                helpPreamble        + "\n\n" +
-                helpUsage           + "\n\n" +
-                buildHelpOptions()  + "\n"   +
-                helpConclusion      + "\n"
+
+        val helpBuilder = StringBuilder()
+        if (programInfo    != "") helpBuilder.append(programInfo    + "\n"  )
+        if (helpUsage      != "") helpBuilder.append(helpUsage      + "\n\n")
+        if (helpPreamble   != "") helpBuilder.append(helpPreamble   + "\n\n")
+        helpBuilder.append(buildHelpOptions() + "\n")
+        if (helpConclusion != "") helpBuilder.append(helpConclusion + "\n"  )
+
+        return helpBuilder.toString()
     }
 
+    /**
+     *
+     * Принятие опций
+     *
+     * @param argsList Аргументы программы
+     *
+     * @return Результат[ParseResult] парсинга опций
+     *
+     */
     private fun applyOptions(argsList: MutableList<String>): ParseResult {
 
         var parseResult: ParseResult
@@ -139,6 +152,7 @@ class ArgsParser(
         val retStr = StringBuilder()
         retStr.append("Options:\n")
         for(option in options) {
+            option.descriptionIndent = descriptionIndent
             retStr.append(option.help)
             retStr.append("\n")
         }

@@ -65,13 +65,12 @@ class ArgsParserTest {
         val conf = TestConfiguration()
         val args = "pp1 pp2 -spdhek -o param1 param2 param3 param4 pp3 pp4 pp5 -u paramA paramB paramC".split(" ").toTypedArray()
         val parser = ArgsParser(
-                "Test Program",
-                "v.1.0",
-                "Help preamble",
-                "Help conclusion",
-                conf::applyProgramParam,
-                "Help usage",
-                "Help options"
+                programInfo = "Test Program v.1.0",
+                helpUsage = "Help usage",
+                helpPreamble = "Help preamble",
+                helpConclusion = "Help conclusion",
+                descriptionIndent = 20,
+                applyParams = conf::applyProgramParam
         )
         parser.addOption(Key(
                 "-k",
@@ -98,6 +97,7 @@ class ArgsParserTest {
                 true,
                 conf::applyUnfixParamOption
         ))
+        parser.manualHelpOption = false
         val parseResult = parser.parseArgs(args)
         assert(parseResult == ParseResult.OK || parseResult == ParseResult.HELP_REQUESTED)
     }

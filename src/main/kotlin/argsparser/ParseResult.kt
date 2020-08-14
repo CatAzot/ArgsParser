@@ -10,6 +10,7 @@ package argsparser
  * @property MISSING_REQUIRED_OPTIONS   Отсутствуют требуемые опции
  * @property INVALID_OPTION             Некорректная опция
  * @property INVALID_PARAMS             Некорректные параметры программы
+ * @property INVALID_OPTION_PARAMS      Некорректные параметры опции
  *
  */
 
@@ -19,5 +20,6 @@ enum class ParseResult {
     HELP_REQUESTED,
     MISSING_REQUIRED_OPTIONS,
     INVALID_OPTION,
-    INVALID_PARAMS
+    INVALID_PARAMS,
+    INVALID_OPTION_PARAMS
 }

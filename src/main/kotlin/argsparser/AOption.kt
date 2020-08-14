@@ -19,16 +19,26 @@ abstract class AOption(
         protected val shortName     : String,
         protected val fullName      : String,
         protected val description   : String,
-        val priority    : Int,
-        var required    : Boolean,
-        var help        : String = "") {
+        val priority                : Int,
+        var required                : Boolean) {
 
     var applied = false
+    private var customHelp = false
 
-    init {
-        if (help == "")
-            help = buildHelp()
-    }
+    var help: String = buildHelp()
+        set(value) {
+            if(value != "") {
+                customHelp = true
+                field = value
+            } else field = buildHelp()
+        }
+
+    internal var descriptionIndent: Int = 30
+        set(value) {
+            if(value == field) return
+            field = value
+            if(!customHelp) help = buildHelp()
+        }
 
     /**
      *
@@ -49,7 +59,7 @@ abstract class AOption(
      * @return Строка с подсказкой.
      *
      */
-    private fun buildHelp(): String = "\t$shortName, $fullName\n\t\t\t$description"
+    private fun buildHelp(): String = "  $shortName, ${fullName.padEnd(descriptionIndent)} - $description"
 
     /**
      *

@@ -6,3 +6,6 @@ build
 
 # Ignore IDEA conf directory
 .idea
+
+# Small script for me
+copy_jar

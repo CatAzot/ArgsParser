@@ -55,8 +55,10 @@ class FixParamsOption(
                 iterator.remove()
                 val params = LinkedList<String>()
                 for (idx in 0 until cntParams) {
-                    params.add(iterator.next())
-                    iterator.remove()
+                    if(iterator.hasNext()) {
+                        params.add(iterator.next())
+                        iterator.remove()
+                    } else return ParseResult.INVALID_OPTION_PARAMS
                 }
                 if (!action(params.toTypedArray()))
                     return ParseResult.INVALID_OPTION
