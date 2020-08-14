@@ -1,7 +1,7 @@
-package org.argsparsertest
+package argsparsertest
 
 import org.junit.Test
-import org.argsparser.*
+import argsparser.*
 
 private class TestConfiguration {
 

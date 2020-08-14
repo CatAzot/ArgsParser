@@ -1,7 +1,11 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.3.72"
+    id "org.jetbrains.dokka" version "0.10.0"
     id "java-library"
 }
+
+group = 'org.neakmobi.argsparser'
+version = '0.1'
 
 repositories {
     jcenter()
@@ -16,4 +20,9 @@ kotlin {
         implementation "org.jetbrains.kotlin:kotlin-stdlib"
         testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     }
+}
+
+tasks.dokka {
+    outputFormat = "html"
+    outputDirectory = "$buildDir/javadoc"
 }
