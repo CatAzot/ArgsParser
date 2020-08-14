@@ -60,6 +60,7 @@ class FixParamsOption(
                 }
                 if (!action(params.toTypedArray()))
                     return ParseResult.INVALID_OPTION
+                applied = true
                 return ParseResult.OK
             }
         }

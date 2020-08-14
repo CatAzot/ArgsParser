@@ -38,8 +38,10 @@ class UnfixParamsOption(
                     iterator.remove()
                 } while (iterator.hasNext())
 
-                return if (!action(params.toTypedArray())) ParseResult.INVALID_OPTION else ParseResult.OK
+                if (!action(params.toTypedArray())) return ParseResult.INVALID_OPTION
 
+                applied = true
+                return ParseResult.OK
             }
         }
         return if (required) ParseResult.MISSING_REQUIRED_OPTIONS else ParseResult.OK

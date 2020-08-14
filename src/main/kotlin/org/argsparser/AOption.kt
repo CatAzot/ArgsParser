@@ -12,6 +12,7 @@ package org.argsparser
  *                       открытым, на случай если он может стать обязательным во время применения других
  *                       опций.
  * @property help        Подсказка по опции.
+ * @property applied     Флаг, указывающий была ли обработана и принята опция.
  *
  */
 abstract class AOption(
@@ -21,6 +22,8 @@ abstract class AOption(
         val priority    : Int,
         var required    : Boolean,
         var help        : String = "") {
+
+    var applied = false
 
     init {
         if (help == "")

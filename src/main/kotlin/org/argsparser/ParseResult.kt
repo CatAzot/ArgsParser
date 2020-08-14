@@ -9,7 +9,7 @@ package org.argsparser
  * @property HELP_REQUESTED             Запрос подсказки
  * @property MISSING_REQUIRED_OPTIONS   Отсутствуют требуемые опции
  * @property INVALID_OPTION             Некорректная опция
- * @property INVALID_PARAMS             Некорректный параметр программы
+ * @property INVALID_PARAMS             Некорректные параметры программы
  *
  */
 

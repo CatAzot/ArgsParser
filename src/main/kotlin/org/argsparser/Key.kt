@@ -29,6 +29,7 @@ class Key(
                 iterator.remove()
                 if (!action())
                     return ParseResult.INVALID_OPTION
+                applied = true
                 return ParseResult.OK
             }
         }
