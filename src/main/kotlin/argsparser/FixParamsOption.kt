@@ -72,4 +72,15 @@ class FixParamsOption(
         return if (required) ParseResult.MISSING_REQUIRED_OPTIONS else ParseResult.OK
     }
 
+    /**
+     *
+     * Вывод сообщения об ошибке и возврат false (для проверки параметров)
+     *
+     */
+    fun errMsg(msg: String): Boolean {
+        println("Error with $fullName!\n$msg")
+        println(usageHelp)
+        return false
+    }
+
 }

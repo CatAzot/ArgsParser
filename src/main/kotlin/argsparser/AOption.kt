@@ -35,7 +35,6 @@ abstract class AOption(
 
     internal var descriptionIndent: Int = 30
         set(value) {
-            if(value == field) return
             field = value
             if(!customHelp) help = buildHelp()
         }
