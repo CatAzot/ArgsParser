@@ -16,11 +16,11 @@ package argsparser
  *
  */
 abstract class AOption(
-        protected val shortName     : String,
-        protected val fullName      : String,
-        protected val description   : String,
-        val priority                : Int,
-        var required                : Boolean) {
+        val shortName     : String,
+        val fullName      : String,
+        val description   : String,
+        val priority      : Int,
+        var required      : Boolean) {
 
     var applied = false
     private var customHelp = false

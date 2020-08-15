@@ -16,6 +16,7 @@ class FixParamsOption(
         description     : String = "",
         priority        : Int = Int.MIN_VALUE,
         required        : Boolean = false,
+        var usageHelp   : String = "",
         private val cntParams   : Int,
         val action              : (Array<String>) -> Boolean
 ) : AOption(
@@ -37,6 +38,7 @@ class FixParamsOption(
             description     : String = "",
             priority        : Int = Int.MIN_VALUE,
             required        : Boolean = false,
+            usageHelp       : String = "",
             action          : (String) -> Boolean
     ) : this(
             shortName,
@@ -44,6 +46,7 @@ class FixParamsOption(
             description,
             priority,
             required,
+            usageHelp,
             1,
             { t: Array<String> -> action(t[0]) }
     )

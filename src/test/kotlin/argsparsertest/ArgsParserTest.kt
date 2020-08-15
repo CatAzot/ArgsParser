@@ -86,6 +86,7 @@ class ArgsParserTest {
                 "Option with fix params",
                 conf.multiParamOptionPrior,
                 true,
+                "Usage: --option [${conf.optionMultiParam.size} params]",
                 conf.optionMultiParam.size,
                 conf::applyMultiParamOption
         ))
@@ -95,6 +96,7 @@ class ArgsParserTest {
                 "Option with unfix params",
                 conf.unfixedParamOptionPrior,
                 true,
+                "Usage: --unfix [unfixed params...]",
                 conf::applyUnfixParamOption
         ))
         parser.manualHelpOption = false

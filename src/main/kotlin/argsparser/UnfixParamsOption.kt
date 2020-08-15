@@ -13,6 +13,7 @@ class UnfixParamsOption(
         description     : String = "",
         priority        : Int = Int.MIN_VALUE,
         required        : Boolean = false,
+        var usageHelp   : String = "",
         val action      : (Array<String>) -> Boolean
 ) : AOption(
         shortName,
