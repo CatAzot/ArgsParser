@@ -4,15 +4,15 @@ package kargsparser
  *
  * Опция командной строки.
  *
- * @property shortName   Короткое имя опции (Пример: -h).
- * @property fullName    Полное имя опции (Пример: --help).
- * @property description Описание опции. Используется при формировании подсказки.
- * @property priority    Приоритет опции. Чем выше это значение, тем ранее будет обработана опция.
- * @property required    Флаг, указывающий, является ли опция обязательной. Флаг является изменяемым и
- *                       открытым, на случай если он может стать обязательным во время применения других
- *                       опций.
- * @property help        Подсказка по опции.
- * @property applied     Флаг, указывающий была ли обработана и принята опция.
+ * @property shortName          Короткое имя опции (Пример: -h).
+ * @property fullName           Полное имя опции (Пример: --help).
+ * @property description        Описание опции. Используется при формировании подсказки.
+ * @property priority           Приоритет опции. Чем выше это значение, тем ранее будет обработана опция.
+ * @property required           Флаг, указывающий, является ли опция обязательной. Флаг является изменяемым и
+ *                              открытым, на случай если он может стать обязательным во время применения других
+ *                              опций.
+ * @property help               Подсказка по опции. Если не была установлена, то формируется автоматически.
+ * @property descriptionIndent  Величина интервала между именем опции и ее описанием в подсказке.
  *
  */
 abstract class AOption(
@@ -22,22 +22,10 @@ abstract class AOption(
         val priority      : Int,
         var required      : Boolean) {
 
-    var applied = false
-    private var customHelp = false
+    var help: String = ""
+        get() = if(field == "") buildHelp() else field
 
-    var help: String = buildHelp()
-        set(value) {
-            if(value != "") {
-                customHelp = true
-                field = value
-            } else field = buildHelp()
-        }
-
-    internal var descriptionIndent: Int = 30
-        set(value) {
-            field = value
-            if(!customHelp) help = buildHelp()
-        }
+    var descriptionIndent: Int = 30
 
     /**
      *
@@ -46,7 +34,7 @@ abstract class AOption(
      * @param args Список аргументов командной строки. После принятия опции, аргументы
      *             удаляются из списка.
      *
-     * @return     Результат парсинга опции.
+     * @return Результат парсинга опции.
      *
      */
     abstract fun apply(args: MutableList<String>): ParseResult

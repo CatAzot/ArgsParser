@@ -1,13 +1,12 @@
 package kargsparser
 
-import java.util.*
-
 /**
  *
  * Опция с фиксированным числом параметров
  *
- * @param cntParams Количество параметров.
- * @param action    Действие, выполняемое при примении параметров
+ * @param cntParams     Количество параметров.
+ * @param action        Действие, выполняемое при применении параметров
+ * @property usageHelp  Подсказка по использованию опции
  *
  */
 class FixParamsOption(
@@ -28,9 +27,8 @@ class FixParamsOption(
 ) {
 
     /**
-     *
-     * Позволяет создать опцию с одним параметром и использовать обработчик без массива
-     *
+     * Позволяет создать опцию с одним параметром и использовать обработчик
+     * с сигнатурой (str) -> bool вместо (str[]) -> bool (без массива на входе)
      */
     constructor(
             shortName       : String,
@@ -56,7 +54,7 @@ class FixParamsOption(
         while (iterator.hasNext()) {
             if (checkName(iterator.next())) {
                 iterator.remove()
-                val params = LinkedList<String>()
+                val params = mutableListOf<String>()
                 for (idx in 0 until cntParams) {
                     if(iterator.hasNext()) {
                         params.add(iterator.next())
@@ -65,7 +63,6 @@ class FixParamsOption(
                 }
                 if (!action(params.toTypedArray()))
                     return ParseResult.INVALID_OPTION
-                applied = true
                 return ParseResult.OK
             }
         }
@@ -75,6 +72,8 @@ class FixParamsOption(
     /**
      *
      * Вывод сообщения об ошибке и возврат false (для проверки параметров)
+     *
+     * @param msg Сообщение, выводимое после "Error with $fullName!"
      *
      */
     fun errMsg(msg: String): Boolean {

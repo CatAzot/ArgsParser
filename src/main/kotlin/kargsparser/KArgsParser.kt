@@ -1,6 +1,6 @@
 package kargsparser
 
-import java.util.*
+import kotlin.text.StringBuilder
 
 /**
  *
@@ -35,7 +35,7 @@ class KArgsParser(
      * @property badOption           Опция, на которой произошла ошибка парсинга
      *
      */
-    private val options = LinkedList<AOption>()
+    private val options = mutableListOf<AOption>()
     private var requiredControl = 0
     private var helpRequested = false
 

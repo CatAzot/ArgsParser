@@ -1,7 +1,5 @@
 package kargsparser
 
-import java.util.*
-
 /**
  *
  * Опция с нефиксированным числом параметров. Добавление параметров опции производится до следующей опции.
@@ -26,11 +24,9 @@ class UnfixParamsOption(
         val iterator = args.iterator()
         while (iterator.hasNext()) {
             if (checkName(iterator.next())) {
-
                 iterator.remove()
-                val params = LinkedList<String>()
+                val params = mutableListOf<String>()
                 var currArg: String
-
                 do {
                     currArg = iterator.next()
                     if (currArg[0] == '-')
@@ -38,10 +34,7 @@ class UnfixParamsOption(
                     params.add(currArg)
                     iterator.remove()
                 } while (iterator.hasNext())
-
                 if (!action(params.toTypedArray())) return ParseResult.INVALID_OPTION
-
-                applied = true
                 return ParseResult.OK
             }
         }
