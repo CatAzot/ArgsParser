@@ -1,4 +1,4 @@
-package argsparser
+package kargsparser
 
 import java.util.*
 
@@ -18,7 +18,7 @@ import java.util.*
  * @property descriptionIndent  Величина отступа имени опции и ее описания в подсказке (-h, --help <ОТСТУП> description).
  *
  */
-class ArgsParser(
+class KArgsParser(
         private val programInfo         : String = "",
         private var helpUsage           : String = "",
         private val helpPreamble        : String = "",

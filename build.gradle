@@ -4,7 +4,7 @@ plugins {
     id "java-library"
 }
 
-group = 'org.neakmobi.argsparser'
+group = 'org.neakmobi.kargsparser'
 version = '0.1'
 
 repositories {
