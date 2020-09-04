@@ -2,7 +2,7 @@ package kargsparser
 
 /**
  *
- * Опция командной строки.
+ * Представляет собой общее поведение для всех видов опций
  *
  * @property shortName          Короткое имя опции (Пример: -h).
  * @property fullName           Полное имя опции (Пример: --help).
@@ -16,11 +16,20 @@ package kargsparser
  *
  */
 abstract class AOption(
-        val shortName     : String,
-        val fullName      : String,
-        val description   : String,
-        val priority      : Int,
-        var required      : Boolean) {
+        shortName     : String,
+        fullName      : String,
+        description   : String,
+        priority      : Int,
+        required      : Boolean) {
+
+    /**
+     *
+     */
+    val shortName     : String = shortName
+    val fullName      : String = fullName
+    val description   : String = description
+    val priority      : Int = priority
+    var required      : Boolean = required
 
     var help: String = ""
         get() = if(field == "") buildHelp() else field

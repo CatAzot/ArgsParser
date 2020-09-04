@@ -23,5 +23,5 @@ kotlin {
 }
 
 tasks.named("dokkaJavadoc") {
-    outputDirectory.set(buildDir.resolve("dokkaJavadoc"))
+//    outputDirectory.set()i
 }
