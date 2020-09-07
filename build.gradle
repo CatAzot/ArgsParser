@@ -12,16 +12,18 @@ repositories {
 }
 
 kotlin {
+
     sourceSets {
         main.kotlin.srcDirs += 'src/main/kotlin'
         test.kotlin.srcDirs += 'src/test/kotlin'
     }
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib"
+        dokkaHtmlPlugin("org.jetbrains.dokka:javadoc-plugin:1.4.0-rc")
         testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     }
 }
 
-tasks.named("dokkaJavadoc") {
-//    outputDirectory.set()i
-}
+//tasks.named("dokkaJavadoc") {
+//
+//}

@@ -22,17 +22,16 @@ class Key(
         required
 ) {
 
-    override fun apply(args: MutableList<String>): ParseResult {
+    override fun apply(args: MutableList<String>): OptionParseResult {
         val iterator = args.iterator()
         while (iterator.hasNext()) {
             if (checkName(iterator.next())) {
                 iterator.remove()
-                if (!action())
-                    return ParseResult.INVALID_OPTION
-                return ParseResult.OK
+                status = if(action()) OptionParseResult.OK else OptionParseResult.ERROR
+                return status
             }
         }
-        return if (required) ParseResult.MISSING_REQUIRED_OPTIONS else ParseResult.OK
+        return status
     }
 
 }

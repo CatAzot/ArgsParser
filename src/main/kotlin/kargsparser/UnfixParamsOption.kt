@@ -20,7 +20,7 @@ class UnfixParamsOption(
         priority,
         required
 ) {
-    override fun apply(args: MutableList<String>): ParseResult {
+    override fun apply(args: MutableList<String>): OptionParseResult {
         val iterator = args.iterator()
         while (iterator.hasNext()) {
             if (checkName(iterator.next())) {
@@ -34,11 +34,11 @@ class UnfixParamsOption(
                     params.add(currArg)
                     iterator.remove()
                 } while (iterator.hasNext())
-                if (!action(params.toTypedArray())) return ParseResult.INVALID_OPTION
-                return ParseResult.OK
+                status = if (!action(params.toTypedArray())) OptionParseResult.ERROR else OptionParseResult.OK
+                return status
             }
         }
-        return if (required) ParseResult.MISSING_REQUIRED_OPTIONS else ParseResult.OK
+        return status
     }
 
     /**

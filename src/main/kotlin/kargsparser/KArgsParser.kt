@@ -24,7 +24,7 @@ class KArgsParser(
         private val helpPreamble        : String = "",
         private val helpConclusion      : String = "",
         private var descriptionIndent   : Int = 30,
-        private val applyParams         : (Array<String>) -> Boolean = { false }
+        private val applyParams         : (Array<String>) -> Boolean = { params -> params.isEmpty() }
 ) {
 
     /**
@@ -64,7 +64,7 @@ class KArgsParser(
     fun parseArgs(args: Array<String>): ParseResult {
 
         if(args.isEmpty())
-            return if(requiredControl == 0) ParseResult.OK else ParseResult.EMPTY_ARGS
+            return if(requiredControl == 0 && applyParams(args)) ParseResult.OK else ParseResult.EMPTY_ARGS
 
         val argsList = args.toMutableList()
 
@@ -125,12 +125,17 @@ class KArgsParser(
      */
     private fun applyOptions(argsList: MutableList<String>): ParseResult {
 
-        var parseResult: ParseResult
+        var parseResult: OptionParseResult
         for(option in options) {
             parseResult = option.apply(argsList)
-            if(parseResult != ParseResult.OK) {
+            if(parseResult != OptionParseResult.OK) {
                 badOption = option
-                return parseResult
+                return when(parseResult) {
+                    OptionParseResult.NOT_PROCESSED -> ParseResult.MISSING_REQUIRED_OPTIONS
+                    OptionParseResult.ERROR -> ParseResult.INVALID_OPTION
+                    OptionParseResult.MISSING_PARAMS -> ParseResult.INVALID_OPTION_PARAMS
+                    else -> ParseResult.UNKNOWN_ERROR
+                }
             }
             if(option.required) requiredControl--
         }
@@ -139,6 +144,7 @@ class KArgsParser(
             return ParseResult.MISSING_REQUIRED_OPTIONS
 
         return ParseResult.OK
+
     }
 
     /**

@@ -49,7 +49,7 @@ class FixParamsOption(
             { t: Array<String> -> action(t[0]) }
     )
 
-    override fun apply(args: MutableList<String>): ParseResult {
+    override fun apply(args: MutableList<String>): OptionParseResult {
         val iterator = args.iterator()
         while (iterator.hasNext()) {
             if (checkName(iterator.next())) {
@@ -59,14 +59,13 @@ class FixParamsOption(
                     if(iterator.hasNext()) {
                         params.add(iterator.next())
                         iterator.remove()
-                    } else return ParseResult.INVALID_OPTION_PARAMS
+                    } else return OptionParseResult.MISSING_PARAMS
                 }
-                if (!action(params.toTypedArray()))
-                    return ParseResult.INVALID_OPTION
-                return ParseResult.OK
+                status = if (!action(params.toTypedArray())) OptionParseResult.ERROR else OptionParseResult.OK
+                return status
             }
         }
-        return if (required) ParseResult.MISSING_REQUIRED_OPTIONS else ParseResult.OK
+        return status
     }
 
     /**

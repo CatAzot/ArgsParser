@@ -62,6 +62,10 @@ private class TestConfiguration {
 class KArgsParserTest {
     @Test
     fun test() {
+        val simpleParser = KArgsParser {
+            params ->
+            true
+        }
         val conf = TestConfiguration()
         val args = "pp1 pp2 -spdhek -o param1 param2 param3 param4 pp3 pp4 pp5 -u paramA paramB paramC".split(" ").toTypedArray()
         val parser = KArgsParser(

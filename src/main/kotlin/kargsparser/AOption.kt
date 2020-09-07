@@ -2,67 +2,94 @@ package kargsparser
 
 /**
  *
- * Представляет собой общее поведение для всех видов опций
+ * Обобщенное представление опции командной строки
  *
- * @property shortName          Короткое имя опции (Пример: -h).
- * @property fullName           Полное имя опции (Пример: --help).
- * @property description        Описание опции. Используется при формировании подсказки.
- * @property priority           Приоритет опции. Чем выше это значение, тем ранее будет обработана опция.
- * @property required           Флаг, указывающий, является ли опция обязательной. Флаг является изменяемым и
- *                              открытым, на случай если он может стать обязательным во время применения других
- *                              опций.
- * @property help               Подсказка по опции. Если не была установлена, то формируется автоматически.
- * @property descriptionIndent  Величина интервала между именем опции и ее описанием в подсказке.
+ * @constructor Конструктор для наследников: [Ключа][Key], [Опции с фиксированным числом параметров][FixParamsOption],
+ * [Опции с нефиксированным числом параметров][FixParamsOption].
+ * @param fullName Основное имя опции (--help, --key).
+ * @param shortName Альтернативное имя опции (-h, -k).
+ * @param description Подсказка по опции для [help-сообщения][KArgsParser.buildHelp].
+ * @param priority Приоритет опции. Чем меньше значение - тем выше приоритет.
+ * @param required Является ли опция обязательной к обработке.
  *
  */
 abstract class AOption(
-        shortName     : String,
-        fullName      : String,
-        description   : String,
-        priority      : Int,
-        required      : Boolean) {
+
+
+        /**
+         * Полное имя опции (например: --help, --key). Указывается вместе с двумя дефисами.
+         * Реализация позволяет использовать любое имя, поэтому можно рассматривать как основное имя опции (альтернативное: [shortName]).
+         */
+        val fullName: String,
+
+
+        /**
+         * Короткое имя опции (пример: -h, -k). Указывается вместе с дефисом.
+         * Реализация позволяет использовать любое имя, поэтому можно рассматривать как альтернативное имя опции (основное: [fullName]).
+         */
+        val shortName: String,
+
+
+        /**
+         * Описание опции. Используется при построении подсказки для пользователя (выводимая по ключу -h или --help).
+         */
+        val description: String,
+
+
+        /**
+         * Приоритет опции. Чем меньше это значение, тем раньше будет [принята][AOption.apply] эта опция среди аргументов.
+         */
+        val priority: Int,
+
+
+        /**
+         * Флаг, указывающий является ли опция обязательной, т.е. должна встретиться в списке аргументов. Поле изменяемое,
+         * поэтому флаг может быть установлен в процессе обработки других опций.
+         */
+        var required: Boolean) {
+
 
     /**
-     *
+     * Строка с подсказкой по опции. Используется при [построении][KArgsParser.buildHelp] help-сообщения. Строится
+     * автоматически, если не была установлена. Установите значение "" (пустая строка) для сброса ранее установленной
+     * подсказки.
      */
-    val shortName     : String = shortName
-    val fullName      : String = fullName
-    val description   : String = description
-    val priority      : Int = priority
-    var required      : Boolean = required
-
     var help: String = ""
-        get() = if(field == "") buildHelp() else field
+        get() = if (field == "") buildHelp() else field
 
-    var descriptionIndent: Int = 30
 
     /**
-     *
-     * Принятие опции.
-     *
+     * Отступ описания опции от ее имени в сообщении. Устанавливается через [KArgsParser].
+     */
+    internal var descriptionIndent: Int = 30
+
+
+    /**
+     * Состояние опции. Возможные значения перечислены в [OptionParseResult].
+     */
+    var status = OptionParseResult.NOT_PROCESSED
+    protected set
+
+
+    /**
+     * Принятие опции, перегружаемый метод
      * @param args Список аргументов командной строки. После принятия опции, аргументы
      *             удаляются из списка.
-     *
-     * @return Результат парсинга опции.
-     *
+     * @return Результат парсинга опции
      */
-    abstract fun apply(args: MutableList<String>): ParseResult
+    abstract fun apply(args: MutableList<String>): OptionParseResult
+
 
     /**
-     *
      * Построение подсказки по опции.
-     *
+     * Сюда надо добавить либо возможность перегрузки, либо ещё какие-либо трюки для смены формата вывода подсказки
      * @return Строка с подсказкой.
-     *
      */
     private fun buildHelp(): String = "  $shortName, ${fullName.padEnd(descriptionIndent)} - $description"
 
     /**
-     *
      * Проверка имени опции.
-     *
      * @param name Проверка имени.
-     *
      */
     internal fun checkName(name: String): Boolean = (name == shortName || name == fullName)
 
